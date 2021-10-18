@@ -33,7 +33,7 @@ You can get the fingerprint/SHA1 from the command output
 
 Alternatively, you can also install from git url
 
-    cordova plugin add https://github.com/Deepaksai1919/cordova-truecaller.git --variable PARTNER_KEY='<Your truecaller partnerkey>'
+    cordova plugin add https://github.com/Faiyyaz/cordova-truecaller.git --variable PARTNER_KEY='<Your truecaller partnerkey>'
 
 
 ---
