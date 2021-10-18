@@ -1,0 +1,21 @@
+{
+  "name": "cordova-plugin-truecaller",
+  "version": "1.0.2",
+  "description": "Cordova plugin for authentication with truecaller",
+  "cordova": {
+    "id": "cordova-plugin-truecaller",
+    "platforms": [
+      "android"
+    ]
+  },
+  
+  "repository": "github:Deepaksai1919/cordova-truecaller",
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android",
+    "truecaller",
+    "cordova-truecaller"
+  ],
+  "author": "Deepak",
+  "license": "ISC"
+}

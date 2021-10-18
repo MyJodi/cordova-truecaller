@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova-plugin-truecaller" version="1.0.0"
+    xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>Cordova Truecaller Plugin</name>
+    <preference name="PARTNER_KEY"/>
+    <engines>
+      <engine name="cordova" version=">=8.0.0" />
+        <engine name="cordova-android" version="<9.0.0" />
+    </engines>
+    <dependency id="cordova-plugin-android-fragmentactivity" url="https://github.com/ReallySmallSoftware/cordova-plugin-android-fragmentactivity.git" />
+    <platform name="android">
+        <hook type="after_prepare" src="scripts/android/enableAndroidX.js" />
+        <js-module name="TruecallerPlugin" src="www/truecaller.js">
+            <clobbers target="cordova.plugins.truecaller" />
+        </js-module>
+        <config-file parent="/*" target="res/xml/config.xml">
+            <feature name="TruecallerPlugin">
+                <param name="android-package" value="org.apache.cordova.truecaller.TruecallerPlugin" />
+            </feature>
+        </config-file>
+        <framework src="com.truecaller.android.sdk:truecaller-sdk:2.5.0" />
+        <config-file parent="/manifest/application" target="AndroidManifest.xml">
+            <meta-data android:name="com.truecaller.android.sdk.PartnerKey" android:value="@string/partnerKey"/>
+        </config-file>
+        <config-file parent="/*" target="res/values/strings.xml">
+            <string name="partnerKey">$PARTNER_KEY</string>
+        </config-file>
+        <source-file src="src/android/TruecallerPlugin.java" target-dir="src/org/apache/cordova/truecaller" />
+    </platform>
+</plugin>
