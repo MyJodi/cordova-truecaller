@@ -194,7 +194,7 @@ public class TruecallerPlugin extends CordovaPlugin {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
         super.onActivityResult(requestCode, resultCode, data);
-        TruecallerSDK.getInstance().onActivityResultObtained((FragmentActivity) this.cordova.getActivity(), resultCode, data);
+        TruecallerSDK.getInstance().onActivityResultObtained((FragmentActivity) this.cordova.getActivity(), requestCode, resultCode, data);
     }
 
     @Override
