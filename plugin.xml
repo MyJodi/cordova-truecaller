@@ -19,7 +19,7 @@
                 <param name="android-package" value="org.apache.cordova.truecaller.TruecallerPlugin" />
             </feature>
         </config-file>
-        <framework src="com.truecaller.android.sdk:truecaller-sdk:2.5.0" />
+        <framework src="com.truecaller.android.sdk:truecaller-sdk:2.6.0" />
         <config-file parent="/manifest/application" target="AndroidManifest.xml">
             <meta-data android:name="com.truecaller.android.sdk.PartnerKey" android:value="@string/partnerKey"/>
         </config-file>
