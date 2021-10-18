@@ -50,15 +50,19 @@ Displays the truecaller dialog to authenticate the user.
 
 **Example**  
 ```js
-var options = {
-  consentMode: 'Bottomsheet',
-  loginTextPrefix: 'To continue',
-  loginTextSuffix: 'Please verify mobile no',
-  ctaTextPrefix: 'Use',
-  buttonShape: 'Rounded',
-  footerType: 'Later',
-  consentTitle: 'Verify',
-  sdkOptions: 'With otp',
+ var options = {
+      consentMode: 'Bottomsheet',
+      buttonColor : '#000000',
+      buttonTextColor : '#FFFFFF',
+      loginTextPrefix: 'To continue',
+      loginTextSuffix: 'Please verify mobile no',
+      ctaTextPrefix: 'Use',
+      buttonShape: 'Rounded',
+      footerType: 'Later',
+      consentTitle: 'Verify',
+      privacyPolicyUrl: 'https://www.example.com',
+      termsOfServiceUrl: 'https://www.example.com',
+      sdkOptions: 'With otp',
 };
 cordova.plugins.truecaller.check(
     function (success) {
