@@ -6,7 +6,7 @@
     <preference name="PARTNER_KEY"/>
     <engines>
       <engine name="cordova" version=">=8.0.0" />
-        <engine name="cordova-android" version="<9.0.0" />
+        <engine name="cordova-android" version="<10.0.0" />
     </engines>
     <dependency id="cordova-plugin-android-fragmentactivity" url="https://github.com/ReallySmallSoftware/cordova-plugin-android-fragmentactivity.git" />
     <platform name="android">
