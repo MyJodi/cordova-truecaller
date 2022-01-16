@@ -58,9 +58,10 @@ const buttonShape = {
 };
 
 const footerType = {
-    'Another method': 256,
-    'Manually': 512,
+    'Use another method': 256,
+    'Enter details manually': 512,
     'Later': 4096,
+    'Use another number': 5120,
 };
 
 const sdkOption = {
