@@ -61,7 +61,7 @@ const footerType = {
     'Use another method': 256,
     'Enter details manually': 512,
     'Later': 4096,
-    'Use another number': 5120,
+    'Use another number': 2,
 };
 
 const sdkOption = {
