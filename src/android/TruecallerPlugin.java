@@ -1,5 +1,8 @@
 package org.apache.cordova.truecaller;
 
+import static android.app.Activity.RESULT_OK;
+import static androidx.core.app.ActivityCompat.startIntentSenderForResult;
+
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
@@ -11,8 +14,12 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.Toast;
 import android.graphics.Color;
 import android.util.Log;
@@ -22,6 +29,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import com.google.android.gms.auth.api.credentials.Credential;
+import com.google.android.gms.auth.api.credentials.Credentials;
+import com.google.android.gms.auth.api.credentials.CredentialsApi;
+import com.google.android.gms.auth.api.credentials.HintRequest;
 import com.truecaller.android.sdk.ITrueCallback;
 import com.truecaller.android.sdk.SdkThemeOptions;
 import com.truecaller.android.sdk.TrueError;
@@ -36,6 +47,7 @@ import com.truecaller.android.sdk.TrueException;
  */
 public class TruecallerPlugin extends CordovaPlugin {
 
+  private static final int CREDENTIAL_PICKER_REQUEST = 1;
   private TrueProfile profile;
   private CallbackContext callbackContext;
   private PluginResult result;
@@ -67,7 +79,7 @@ public class TruecallerPlugin extends CordovaPlugin {
     public void onVerificationRequired(TrueError trueError) {
       // Toast.makeText(TruecallerPlugin.this.cordova.getActivity().getApplicationContext(),
       //         "Verification Required",
-      //         Toast.LENGTH_SHORT).show();      
+      //         Toast.LENGTH_SHORT).show();
       Log.e("onFailureProfileShared: ", String.valueOf(trueError.getErrorType()));
       TruecallerPlugin.this.sendResponse("error", String.valueOf(trueError.getErrorType()));
     }
@@ -169,11 +181,49 @@ public class TruecallerPlugin extends CordovaPlugin {
   public void initCustomVerification(JSONObject options) {
     try {
       Log.i("Mobile Number", options.getString("mobile"));
-      TruecallerSDK.getInstance().requestVerification("IN", options.getString("mobile"), apiCallback, (FragmentActivity) this.cordova.getActivity());
+      //TruecallerSDK.getInstance().requestVerification("IN", options.getString("mobile"), apiCallback, (FragmentActivity) this.cordova.getActivity());
+      HintRequest hintRequest = new HintRequest.Builder()
+        .setPhoneNumberIdentifierSupported(true)
+        .build();
+
+
+      PendingIntent intent = Credentials.getClient(this.cordova.getContext()).getHintPickerIntent(hintRequest);
+      try
+      {
+        startIntentSenderForResult(this.cordova.getActivity(),intent.getIntentSender(), CREDENTIAL_PICKER_REQUEST, null, 0, 0, 0,new Bundle());
+      }
+      catch (IntentSender.SendIntentException e)
+      {
+        e.printStackTrace();
+      }
     } catch (JSONException e) {
       e.printStackTrace();
       TruecallerPlugin.this.sendResponse("error", e.getMessage());
     }
+  }
+
+
+
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, Intent data)
+  {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode == CREDENTIAL_PICKER_REQUEST && resultCode == RESULT_OK)
+    {
+      // Obtain the phone number from the result
+      Credential credentials = data.getParcelableExtra(Credential.EXTRA_KEY);
+      //EditText.setText(credentials.getId().substring(3)); //get the selected phone number
+//Do what ever you want to do with your selected phone number here
+      Toast.makeText(this.cordova.getContext(), "Selected: "+credentials.getId().substring(3), Toast.LENGTH_LONG).show();
+
+    }
+    else if (requestCode == CREDENTIAL_PICKER_REQUEST && resultCode == CredentialsApi.ACTIVITY_RESULT_NO_HINTS_AVAILABLE)
+    {
+      // *** No phone numbers available ***
+      Toast.makeText(this.cordova.getContext(), "No phone numbers found", Toast.LENGTH_LONG).show();
+    }
+
+
   }
 
   private JSONObject getProfile(TrueProfile trueprofile) throws JSONException {
