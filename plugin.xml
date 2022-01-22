@@ -20,6 +20,11 @@
             </feature>
         </config-file>
         <framework src="com.truecaller.android.sdk:truecaller-sdk:2.6.0" />
+        <framework src="com.google.android.gms:play-services-auth:jar:20.0.1" />
+        <framework src="com.google.android.gms:play-services-identity:jar:18.0.1" />
+        <framework src="com.google.android.gms:play-services-auth-api-phone:jar:18.0.1" />
+        <framework src="com.google.android.gms:play-services-base:jar:18.0.1" />
+        
         <config-file parent="/manifest/application" target="AndroidManifest.xml">
             <meta-data android:name="com.truecaller.android.sdk.PartnerKey" android:value="@string/partnerKey"/>
         </config-file>
