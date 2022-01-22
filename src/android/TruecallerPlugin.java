@@ -28,6 +28,7 @@ import com.truecaller.android.sdk.TrueError;
 import com.truecaller.android.sdk.TrueProfile;
 import com.truecaller.android.sdk.TruecallerSDK;
 import com.truecaller.android.sdk.TruecallerSdkScope;
+import com.truecaller.android.sdk.*;
 
 
 /**
@@ -104,6 +105,8 @@ public class TruecallerPlugin extends CordovaPlugin {
             try {
                if(TruecallerSDK.getInstance().isUsable()){
                    TruecallerSDK.getInstance().getUserProfile((FragmentActivity) this.cordova.getActivity());
+                   TruecallerSDK.getInstance().requestVerification("IN", "7901457824", apiCallback, (FragmentActivity) this.cordova.getActivity());
+
                }else{
                    this.sendResponse("error", "Truecaller is not available on device");
                }
@@ -201,4 +204,45 @@ public class TruecallerPlugin extends CordovaPlugin {
     public void onDestroy(){
         TruecallerSDK.clear();
     }
+
+    @Override
+    public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions,
+                                           @NonNull final int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+    static final VerificationCallback apiCallback = new VerificationCallback() {
+
+     @Override
+     public void onRequestSuccess(int requestCode, @Nullable VerificationDataBundle extras) {
+         log.i(requestCode);
+ 	    
+        if (requestCode == VerificationCallback.TYPE_MISSED_CALL_INITIATED) {
+               if(extras != null) 
+                      extras.getString(VerificationDataBundle.KEY_TTL)
+ 	      }
+ 
+        if (requestCode == VerificationCallback.TYPE_MISSED_CALL_RECEIVED) {
+ 	      }
+ 
+        if (requestCode == VerificationCallback.TYPE_OTP_INITIATED) {
+               if(extras != null) 
+                      extras.getString(VerificationDataBundle.KEY_TTL)
+ 	      }
+ 
+        if (requestCode == VerificationCallback.TYPE_OTP_RECEIVED) {
+ 	      }
+ 
+        if (requestCode == VerificationCallback.TYPE_VERIFICATION_COMPLETE) {
+ 	      }
+ 
+        if (requestCode == VerificationCallback.TYPE_PROFILE_VERIFIED_BEFORE) {
+ 	      }
+ 
+     }
+
+     @Override
+     public void onRequestFailure(final int requestCode, @NonNull final TrueException e) {
+     }
+     
+ };
 }
