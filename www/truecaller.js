@@ -99,3 +99,8 @@ exports.check = function(success, error) {
 exports.clearSdk = function() {
     exec(null, null, 'TruecallerPlugin', 'clearSDk', []);
 };
+
+
+exports.initCustomVerification = function(options, success, error) {
+    exec(success, error, 'TruecallerPlugin', 'initCustomVerification', [options]);
+};
