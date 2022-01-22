@@ -28,9 +28,8 @@ import com.truecaller.android.sdk.TrueError;
 import com.truecaller.android.sdk.TrueProfile;
 import com.truecaller.android.sdk.TruecallerSDK;
 import com.truecaller.android.sdk.TruecallerSdkScope;
-import com.truecaller.android.sdk.*;
-
-
+import com.truecaller.android.sdk.clients.VerificationCallback;
+import com.truecaller.android.sdk.clients.VerificationDataBundle;
 /**
  * This class echoes a string called from JavaScript.
  */
@@ -72,7 +71,7 @@ public class TruecallerPlugin extends CordovaPlugin {
             TruecallerPlugin.this.sendResponse("error", String.valueOf(trueError.getErrorType()));
         }
     }
-    
+
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equals("checkTruecaller")) {
@@ -210,39 +209,42 @@ public class TruecallerPlugin extends CordovaPlugin {
                                            @NonNull final int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-    static final VerificationCallback apiCallback = new VerificationCallback() {
+  final VerificationCallback apiCallback = new VerificationCallback() {
 
-     @Override
-     public void onRequestSuccess(int requestCode, @Nullable VerificationDataBundle extras) {
-         log.i(requestCode);
- 	    
-        if (requestCode == VerificationCallback.TYPE_MISSED_CALL_INITIATED) {
-               if(extras != null) 
-                      extras.getString(VerificationDataBundle.KEY_TTL)
- 	      }
- 
-        if (requestCode == VerificationCallback.TYPE_MISSED_CALL_RECEIVED) {
- 	      }
- 
-        if (requestCode == VerificationCallback.TYPE_OTP_INITIATED) {
-               if(extras != null) 
-                      extras.getString(VerificationDataBundle.KEY_TTL)
- 	      }
- 
-        if (requestCode == VerificationCallback.TYPE_OTP_RECEIVED) {
- 	      }
- 
-        if (requestCode == VerificationCallback.TYPE_VERIFICATION_COMPLETE) {
- 	      }
- 
-        if (requestCode == VerificationCallback.TYPE_PROFILE_VERIFIED_BEFORE) {
- 	      }
- 
-     }
+    @Override
+    public void onRequestSuccess(int requestCode, @Nullable VerificationDataBundle extras) {
+      log.i(requestCode);
+      if (requestCode == VerificationCallback.TYPE_MISSED_CALL_INITIATED) {
 
-     @Override
-     public void onRequestFailure(final int requestCode, @NonNull final TrueException e) {
-     }
-     
- };
+    //Retrieving the TTL for missedcall
+        if(extras != null){
+          extras.getString(VerificationDataBundle.KEY_TTL);
+        }
+      }
+      if (requestCode == VerificationCallback.TYPE_MISSED_CALL_RECEIVED) {
+
+        TrueProfile profile = new TrueProfile.Builder("USER-FIRST-NAME","USER-LAST-NAME").build();
+        TruecallerSDK.getInstance().verifyMissedCall(profile, apiCallback);
+      }
+      if (requestCode == VerificationCallback.TYPE_OTP_INITIATED) {
+
+//Retrieving the TTL for otp
+        if(extras != null){
+          extras.getString(VerificationDataBundle.KEY_TTL);
+        }
+      }
+      if (requestCode == VerificationCallback.TYPE_OTP_RECEIVED) {
+        TrueProfile profile = new TrueProfile.Builder("USER-FIRST-NAME","USER-LAST-NAME").build();
+        TruecallerSDK.getInstance().verifyOtp(profile, "OTP-ENTERED-BY-THE-USER", apiCallback);
+      }
+      if (requestCode == VerificationCallback.TYPE_VERIFICATION_COMPLETE) {
+      }
+      if (requestCode == VerificationCallback.TYPE_PROFILE_VERIFIED_BEFORE) {
+      }
+    }
+    @Override
+    public void onRequestFailure(final int requestCode, @NonNull final TrueException e) {
+      //Write the Exception Part
+    }
+  };
 }
