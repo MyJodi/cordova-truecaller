@@ -181,24 +181,26 @@ public class TruecallerPlugin extends CordovaPlugin {
   public void initCustomVerification(JSONObject options) {
     try {
       Log.i("Mobile Number", options.getString("mobile"));
-      //TruecallerSDK.getInstance().requestVerification("IN", options.getString("mobile"), apiCallback, (FragmentActivity) this.cordova.getActivity());
-      HintRequest hintRequest = new HintRequest.Builder()
-        .setPhoneNumberIdentifierSupported(true)
-        .build();
+      TruecallerSDK.getInstance().requestVerification("IN", options.getString("mobile"), apiCallback, (FragmentActivity) this.cordova.getActivity());
 
-
-      PendingIntent intent = Credentials.getClient(this.cordova.getContext()).getHintPickerIntent(hintRequest);
-      try
-      {
-        startIntentSenderForResult(this.cordova.getActivity(),intent.getIntentSender(), CREDENTIAL_PICKER_REQUEST, null, 0, 0, 0,new Bundle());
-      }
-      catch (IntentSender.SendIntentException e)
-      {
-        e.printStackTrace();
-      }
     } catch (JSONException e) {
       e.printStackTrace();
       TruecallerPlugin.this.sendResponse("error", e.getMessage());
+    }
+  }
+
+  public void hintNumbers() {
+
+    HintRequest hintRequest = new HintRequest.Builder()
+      .setPhoneNumberIdentifierSupported(true)
+      .build();
+
+
+    PendingIntent intent = Credentials.getClient(this.cordova.getContext()).getHintPickerIntent(hintRequest);
+    try {
+      startIntentSenderForResult(this.cordova.getActivity(), intent.getIntentSender(), CREDENTIAL_PICKER_REQUEST, null, 0, 0, 0, new Bundle());
+    } catch (IntentSender.SendIntentException e) {
+      e.printStackTrace();
     }
   }
 
@@ -264,7 +266,7 @@ public class TruecallerPlugin extends CordovaPlugin {
     TruecallerSDK.clear();
   }
 
-  final VerificationCallback apiCallback = new VerificationCallback() {
+   final VerificationCallback apiCallback = new VerificationCallback() {
 
     @Override
     public void onRequestSuccess(int requestCode, @Nullable VerificationDataBundle extras) {
@@ -276,12 +278,14 @@ public class TruecallerPlugin extends CordovaPlugin {
           extras.getString(VerificationDataBundle.KEY_TTL);
         }
         Log.i("TC Verification:", "in TYPE_MISSED_CALL_INITIATED");
+        Toast.makeText(TruecallerPlugin.this.cordova.getContext(), "in TYPE_MISSED_CALL_INITIATED", Toast.LENGTH_LONG).show();
       }
       if (requestCode == VerificationCallback.TYPE_MISSED_CALL_RECEIVED) {
 
         TrueProfile profile = new TrueProfile.Builder("USER-FIRST-NAME", "USER-LAST-NAME").build();
         TruecallerSDK.getInstance().verifyMissedCall(profile, apiCallback);
         Log.i("TC Verification:", "in TYPE_MISSED_CALL_RECEIVED");
+        Toast.makeText(TruecallerPlugin.this.cordova.getContext(), "in TYPE_MISSED_CALL_RECEIVED", Toast.LENGTH_LONG).show();
       }
       if (requestCode == VerificationCallback.TYPE_OTP_INITIATED) {
 
@@ -290,23 +294,28 @@ public class TruecallerPlugin extends CordovaPlugin {
           extras.getString(VerificationDataBundle.KEY_TTL);
         }
         Log.i("TC Verification:", "in TYPE_OTP_INITIATED");
+        Toast.makeText(TruecallerPlugin.this.cordova.getContext(), "in TYPE_OTP_INITIATED", Toast.LENGTH_LONG).show();
       }
       if (requestCode == VerificationCallback.TYPE_OTP_RECEIVED) {
         TrueProfile profile = new TrueProfile.Builder("USER-FIRST-NAME", "USER-LAST-NAME").build();
         TruecallerSDK.getInstance().verifyOtp(profile, "OTP-ENTERED-BY-THE-USER", apiCallback);
         Log.i("TC Verification:", "in TYPE_OTP_RECEIVED");
+        Toast.makeText(TruecallerPlugin.this.cordova.getContext(), "in TYPE_OTP_RECEIVED", Toast.LENGTH_LONG).show();
       }
       if (requestCode == VerificationCallback.TYPE_VERIFICATION_COMPLETE) {
         Log.i("TC Verification:", "Complete");
+        Toast.makeText(TruecallerPlugin.this.cordova.getContext(), "in TYPE_VERIFICATION_COMPLETE", Toast.LENGTH_LONG).show();
       }
       if (requestCode == VerificationCallback.TYPE_PROFILE_VERIFIED_BEFORE) {
         Log.i("TC Verification:", "It was verified in the past");
+        Toast.makeText(TruecallerPlugin.this.cordova.getContext(), "in TYPE_PROFILE_VERIFIED_BEFORE", Toast.LENGTH_LONG).show();
       }
     }
     @Override
     public void onRequestFailure(final int requestCode, @NonNull final TrueException e) {
       //Write the Exception Part
       Log.i("tc test fail:", "Test" + e.getExceptionMessage());
+      Toast.makeText(TruecallerPlugin.this.cordova.getContext(), "in error"+ e.getExceptionMessage(), Toast.LENGTH_LONG).show();
     }
 
   };
