@@ -112,6 +112,12 @@ public class TruecallerPlugin extends CordovaPlugin {
       this.initCustomVerification(options);
       return true;
     }
+    if (action.equals("hintNumbers")) {
+      this.callbackContext = callbackContext;
+      this.cordova.setActivityResultCallback(this);      
+      this.hintNumbers();
+      return true;
+    }
     if (action.equals("clearSDK")) {
       TruecallerSDK.clear();
       return true;
@@ -216,13 +222,15 @@ public class TruecallerPlugin extends CordovaPlugin {
       Credential credentials = data.getParcelableExtra(Credential.EXTRA_KEY);
       //EditText.setText(credentials.getId().substring(3)); //get the selected phone number
 //Do what ever you want to do with your selected phone number here
-      Toast.makeText(this.cordova.getContext(), "Selected: "+credentials.getId().substring(3), Toast.LENGTH_LONG).show();
+      //Toast.makeText(this.cordova.getContext(), "Selected: "+credentials.getId().substring(3), Toast.LENGTH_LONG).show();
+      this.sendResponse("success", credentials.getId().substring(3));
 
     }
     else if (requestCode == CREDENTIAL_PICKER_REQUEST && resultCode == CredentialsApi.ACTIVITY_RESULT_NO_HINTS_AVAILABLE)
     {
       // *** No phone numbers available ***
-      Toast.makeText(this.cordova.getContext(), "No phone numbers found", Toast.LENGTH_LONG).show();
+      //Toast.makeText(this.cordova.getContext(), "No phone numbers found", Toast.LENGTH_LONG).show();
+      this.sendResponse("error", "No phone numbers found");
     }
 
 

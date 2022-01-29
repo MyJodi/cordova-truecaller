@@ -104,3 +104,7 @@ exports.clearSdk = function() {
 exports.initCustomVerification = function(options, success, error) {
     exec(success, error, 'TruecallerPlugin', 'initCustomVerification', [options]);
 };
+
+exports.hintNumbers = function(success, error) {
+    exec(success, error, 'TruecallerPlugin', 'hintNumbers', []);
+};
