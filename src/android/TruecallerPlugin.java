@@ -1,5 +1,7 @@
 package org.apache.cordova.truecaller;
 
+import static androidx.core.app.ActivityCompat.startIntentSenderForResult;
+
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
@@ -11,8 +13,11 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.widget.Toast;
 import android.graphics.Color;
 import android.util.Log;
@@ -22,6 +27,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import com.google.android.gms.auth.api.credentials.Credentials;
+import com.google.android.gms.auth.api.credentials.HintRequest;
 import com.truecaller.android.sdk.ITrueCallback;
 import com.truecaller.android.sdk.SdkThemeOptions;
 import com.truecaller.android.sdk.TrueError;
@@ -34,6 +41,7 @@ import com.truecaller.android.sdk.TruecallerSdkScope;
  */
 public class TruecallerPlugin extends CordovaPlugin {
 
+  private static final int CREDENTIAL_PICKER_REQUEST = 1;
   private TrueProfile profile;
   private CallbackContext callbackContext;
   private PluginResult result;
