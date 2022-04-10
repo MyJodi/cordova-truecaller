@@ -233,6 +233,7 @@ public class TruecallerPlugin extends CordovaPlugin {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == CREDENTIAL_PICKER_REQUEST && resultCode == RESULT_OK) {
             // Obtain the phone number from the result
             Credential credentials = data.getParcelableExtra(Credential.EXTRA_KEY);
@@ -245,6 +246,10 @@ public class TruecallerPlugin extends CordovaPlugin {
             // *** No phone numbers available ***
             //Toast.makeText(this.cordova.getContext(), "No phone numbers found", Toast.LENGTH_LONG).show();
             this.sendResponse("error", "No phone numbers found");
+        } else if (requestCode == CREDENTIAL_PICKER_REQUEST && resultCode == CredentialsApi.ACTIVITY_RESULT_OTHER_ACCOUNT) {
+            // *** No phone numbers available ***
+            //Toast.makeText(this.cordova.getContext(), "No phone numbers found", Toast.LENGTH_LONG).show();
+            this.sendResponse("error", "SELECTED NONE");
         } else {
             TruecallerSDK.getInstance().onActivityResultObtained((FragmentActivity) this.cordova.getActivity(), requestCode,
                 resultCode, data);
