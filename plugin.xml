@@ -19,7 +19,7 @@
                 <param name="android-package" value="org.apache.cordova.truecaller.TruecallerPlugin" />
             </feature>
         </config-file>
-        <framework src="com.truecaller.android.sdk:truecaller-sdk:2.6.0" />
+        <framework src="com.truecaller.android.sdk:truecaller-sdk:2.8.0" />
         <framework src="com.google.android.gms:play-services-auth:20.0.1" />
         <framework src="com.google.android.gms:play-services-identity:18.0.1" />
         <framework src="com.google.android.gms:play-services-auth-api-phone:18.0.1" />
